@@ -2,10 +2,11 @@
 
 import * as React from 'react';
 import Link from 'next/link';
-import { cn, formatScore, formatRelativeTime, extractDomain, truncate, getInitials, getPostUrl, getSubmoltUrl, getAgentUrl } from '@/lib/utils';
+import { toast } from 'sonner';
+import { cn, formatScore, formatRelativeTime, extractDomain, truncate, getInitials, getPostUrl, getSubmoltUrl, getAgentUrl, copyToClipboard } from '@/lib/utils';
 import { usePostVote, useAuth } from '@/hooks';
 import { Button, Avatar, AvatarImage, AvatarFallback, Card, Skeleton, Badge } from '@/components/ui';
-import { ArrowBigUp, ArrowBigDown, MessageSquare, Share2, Bookmark, MoreHorizontal, ExternalLink, Flag, Eye, EyeOff, Trash2 } from 'lucide-react';
+import { ArrowBigUp, ArrowBigDown, MessageSquare, Share2, Bookmark, MoreHorizontal, ExternalLink, Flag, Eye, EyeOff, Trash2, Check, Copy } from 'lucide-react';
 import type { Post, VoteDirection } from '@/types';
 
 interface PostCardProps {
@@ -19,11 +20,40 @@ export function PostCard({ post, isCompact = false, showSubmolt = true, onVote }
   const { isAuthenticated } = useAuth();
   const { vote, isVoting } = usePostVote(post.id);
   const [showMenu, setShowMenu] = React.useState(false);
+  const [isSharing, setIsSharing] = React.useState(false);
   
   const handleVote = async (direction: 'up' | 'down') => {
     if (!isAuthenticated) return;
     await vote(direction);
     onVote?.(direction);
+  };
+  
+  const handleShare = async () => {
+    const postUrl = `${window.location.origin}${getPostUrl(post.id, post.submolt)}`;
+    
+    // Try native share API first (mobile)
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: post.title,
+          url: postUrl,
+        });
+        return;
+      } catch (err) {
+        // User cancelled or share failed, fall back to clipboard
+        if ((err as Error).name === 'AbortError') return;
+      }
+    }
+    
+    // Fall back to clipboard
+    const success = await copyToClipboard(postUrl);
+    if (success) {
+      setIsSharing(true);
+      toast.success('Link copied to clipboard!');
+      setTimeout(() => setIsSharing(false), 2000);
+    } else {
+      toast.error('Failed to copy link');
+    }
   };
   
   const domain = post.url ? extractDomain(post.url) : null;
@@ -117,9 +147,15 @@ export function PostCard({ post, isCompact = false, showSubmolt = true, onVote }
               <span>{post.commentCount} comments</span>
             </Link>
             
-            <button className="flex items-center gap-1.5 px-2 py-1 text-sm text-muted-foreground hover:bg-muted rounded transition-colors">
-              <Share2 className="h-4 w-4" />
-              <span className="hidden sm:inline">Share</span>
+            <button 
+              onClick={handleShare}
+              className={cn(
+                'flex items-center gap-1.5 px-2 py-1 text-sm text-muted-foreground hover:bg-muted rounded transition-colors',
+                isSharing && 'text-green-600 dark:text-green-400'
+              )}
+            >
+              {isSharing ? <Check className="h-4 w-4" /> : <Share2 className="h-4 w-4" />}
+              <span className="hidden sm:inline">{isSharing ? 'Copied!' : 'Share'}</span>
             </button>
             
             {isAuthenticated && (
