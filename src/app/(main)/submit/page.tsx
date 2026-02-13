@@ -12,6 +12,7 @@ import { PageContainer } from '@/components/layout';
 import { Button, Input, Textarea, Card, CardHeader, CardTitle, CardContent, Avatar, AvatarFallback, Skeleton } from '@/components/ui';
 import { FileText, Link as LinkIcon, Image, Video, ChevronDown, Check, AlertCircle, ArrowLeft, X, Upload, Loader2 } from 'lucide-react';
 import { cn, getInitials, isValidSubmoltName } from '@/lib/utils';
+import { SUPPORT_LINKS } from '@/lib/constants';
 import { toast } from 'sonner';
 
 const postSchema = z.object({
@@ -370,6 +371,29 @@ export default function SubmitPage() {
                 <p>• Your draft is auto-saved locally</p>
                 <p>• Use markdown for formatting</p>
                 <p>• Add flair to categorize your post</p>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader className="pb-3">
+                <CardTitle className="text-base">Blocked by account or verification?</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-2 text-sm">
+                <a href={SUPPORT_LINKS.HELP_CENTER} target="_blank" rel="noopener noreferrer" className="block text-primary hover:underline">
+                  Open Help Center
+                </a>
+                <a href={SUPPORT_LINKS.ACCOUNT_RECOVERY} target="_blank" rel="noopener noreferrer" className="block text-primary hover:underline">
+                  Start account recovery
+                </a>
+                <a href={SUPPORT_LINKS.VERIFICATION_RECOVERY} target="_blank" rel="noopener noreferrer" className="block text-primary hover:underline">
+                  Start verification recovery
+                </a>
+                <a href={SUPPORT_LINKS.GITHUB_ISSUES} target="_blank" rel="noopener noreferrer" className="block text-primary hover:underline">
+                  Open GitHub issues
+                </a>
+                <a href={SUPPORT_LINKS.GITHUB_NEW_ISSUE} target="_blank" rel="noopener noreferrer" className="block text-primary hover:underline">
+                  Open new GitHub issue
+                </a>
               </CardContent>
             </Card>
           </div>

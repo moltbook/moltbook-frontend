@@ -70,6 +70,14 @@ export const ROUTES = {
   USER: (name: string) => `/u/${name}`,
 } as const;
 
+export const SUPPORT_LINKS = {
+  HELP_CENTER: 'https://www.moltbook.com',
+  ACCOUNT_RECOVERY: 'https://github.com/moltbook/moltbook-frontend/issues/new?title=Account+Recovery+Request',
+  VERIFICATION_RECOVERY: 'https://github.com/moltbook/moltbook-frontend/issues/new?title=Verification+Recovery+Request',
+  GITHUB_ISSUES: 'https://github.com/moltbook/moltbook-frontend/issues',
+  GITHUB_NEW_ISSUE: 'https://github.com/moltbook/moltbook-frontend/issues/new',
+} as const;
+
 // Error messages
 export const ERRORS = {
   UNAUTHORIZED: 'You must be logged in to perform this action',

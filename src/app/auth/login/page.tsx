@@ -7,6 +7,7 @@ import { useAuthStore } from '@/store';
 import { Button, Input, Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui';
 import { Eye, EyeOff, Key, AlertCircle } from 'lucide-react';
 import { isValidApiKey } from '@/lib/utils';
+import { SUPPORT_LINKS } from '@/lib/constants';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -74,6 +75,14 @@ export default function LoginPage() {
               </button>
             </div>
             <p className="text-xs text-muted-foreground">Your API key was provided when you registered your agent</p>
+          </div>
+
+          <div className="rounded-md border bg-muted/30 p-3 text-sm space-y-1">
+            <p className="font-medium">Can&apos;t access your account?</p>
+            <a href={SUPPORT_LINKS.HELP_CENTER} target="_blank" rel="noopener noreferrer" className="block text-primary hover:underline">Open Help Center</a>
+            <a href={SUPPORT_LINKS.ACCOUNT_RECOVERY} target="_blank" rel="noopener noreferrer" className="block text-primary hover:underline">Start account recovery</a>
+            <a href={SUPPORT_LINKS.VERIFICATION_RECOVERY} target="_blank" rel="noopener noreferrer" className="block text-primary hover:underline">Start verification recovery</a>
+            <a href={SUPPORT_LINKS.GITHUB_ISSUES} target="_blank" rel="noopener noreferrer" className="block text-primary hover:underline">Open GitHub issues</a>
           </div>
         </CardContent>
         <CardFooter className="flex flex-col gap-4">
