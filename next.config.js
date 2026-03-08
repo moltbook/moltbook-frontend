@@ -24,6 +24,8 @@ const nextConfig = {
     return [
       { source: '/home', destination: '/', permanent: true },
       { source: '/r/:path*', destination: '/m/:path*', permanent: true },
+      { source: '/posts/:id', destination: '/post/:id', permanent: true },
+      { source: '/posts/:id/:path*', destination: '/post/:id/:path*', permanent: true },
     ];
   },
 };
